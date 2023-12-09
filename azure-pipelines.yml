@@ -1,25 +1,32 @@
 # https://aka.ms/yaml
 pool:
   name: Default
+  steps:
+    - script: |
+        echo "Building and zipping the function app"
+        # Add commands to build your application and create a zip file
+        # For example, you might run a build script or use the dotnet publish command for a .NET function
+        # zip -r functionapp.zip <your function app directory>
+      displayName: 'Build and Zip Function App'
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: 'FunctionApp6/ZipDeploy/FunctionApp6.zip' # Updated path
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: 'FunctionApp6/ZipDeploy/FunctionApp6.zip' # Updated path
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
 
-- task: DownloadBuildArtifacts@1
-  inputs:
-    buildType: 'current'
-    downloadType: 'single'
-    artifactName: 'drop'
-    downloadPath: '$(System.ArtifactsDirectory)'
+    - task: DownloadBuildArtifacts@1
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'drop'
+        downloadPath: '$(System.ArtifactsDirectory)'
 
-- task: AzureFunctionApp@2
-  inputs:
-    connectedServiceNameARM: 'MS Internal: John Cedillo(72b3c902-382b-4243-92a3-7f209b50fc2c)'
-    appType: 'functionAppLinux'
-    appName: 'actLinux'
-    package: '$(System.ArtifactsDirectory)/drop/FunctionApp6.zip'
-    runtimeStack: 'PYTHON|3.11'
-    deploymentMethod: 'runFromPackage'
+    - task: AzureFunctionApp@2
+      inputs:
+        connectedServiceNameARM: 'MS Internal: John Cedillo(72b3c902-382b-4243-92a3-7f209b50fc2c)'
+        appType: 'functionAppLinux'
+        appName: 'actLinux'
+        package: '$(System.ArtifactsDirectory)/drop/FunctionApp6.zip'
+        runtimeStack: 'PYTHON|3.11'
+        deploymentMethod: 'runFromPackage'
