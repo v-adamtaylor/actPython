@@ -1,0 +1,25 @@
+# https://aka.ms/yaml
+pool:
+  name: Default
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'FunctionApp6/ZipDeploy/FunctionApp6.zip' # Updated path
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
+- task: DownloadBuildArtifacts@1
+  inputs:
+    buildType: 'current'
+    downloadType: 'single'
+    artifactName: 'drop'
+    downloadPath: '$(System.ArtifactsDirectory)'
+
+- task: AzureFunctionApp@2
+  inputs:
+    connectedServiceNameARM: 'MS Internal: John Cedillo(72b3c902-382b-4243-92a3-7f209b50fc2c)'
+    appType: 'functionAppLinux'
+    appName: 'actLinux'
+    package: '$(System.ArtifactsDirectory)/drop/FunctionApp6.zip'
+    runtimeStack: 'PYTHON|3.11'
+    deploymentMethod: 'runFromPackage'
