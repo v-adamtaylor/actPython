@@ -11,8 +11,8 @@ import azure.functions as func
 # logging.info('Completed Standard library imports. Starting Third-party imports.')
 # # Third-party imports
 
-# from google.analytics.data_v1beta import BetaAnalyticsDataClient
-# from google.analytics.data_v1beta.types import DateRange, Dimension, Metric, RunReportRequest
+from google.analytics.data_v1beta import BetaAnalyticsDataClient
+from google.analytics.data_v1beta.types import DateRange, Dimension, Metric, RunReportRequest
 
 # from google.analytics import data_v1alpha
 # from google.analytics.data_v1beta import BetaAnalyticsDataClient
